@@ -28,7 +28,6 @@ public class CLI {
         if (operandsList.isEmpty()) populateOperands();
         String[] expressions = expression.split(" ");
         for (String character : expressions) {
-            System.out.println(character);
             if (isNumber(character)) numbers.push(Double.parseDouble(character));
             if (isOperand(character) && numbers.size() >=2 ) numbers.push(calculate(character));
         }
