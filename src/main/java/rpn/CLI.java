@@ -6,14 +6,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CLI {
-    public static ArrayList<String> operandsList = new ArrayList<String>();
     private static Stack<Double> numbers = new Stack<Double>();
 
     public static final void main(String[] args) {
         String expression = Stream.of(args).collect(Collectors.joining(" "));
         System.out.println("About to evaluate '" + expression + "'");
         double result = evaluate(expression);
-        if (numbers.size() == 1) System.out.println("> " + result);
+        if (numbers.size() == 0) System.out.println("> " + result);
         else {
             System.out.print("> ");
             Stack<Double> printableStack = reverse(numbers);
@@ -25,40 +24,18 @@ public class CLI {
     }
 
     static double evaluate(String expression) {
-        if (operandsList.isEmpty()) populateOperands();
+        Evaluator evaluator = new Evaluator();
         String[] expressions = expression.split(" ");
         for (String character : expressions) {
-            if (isNumber(character)) numbers.push(Double.parseDouble(character));
-            if (isOperand(character) && numbers.size() >=2 ) numbers.push(calculate(character));
+            if (evaluator.isNumber(character)) numbers.push(Double.parseDouble(character));
+            if (evaluator.isOperand(character) && numbers.size() >=2 ) numbers.push(calculate(character));
         }
         return numbers.pop();
     }
 
-    static boolean isNumber(String toTest) {
-        try {
-            Double.parseDouble(toTest);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return true;
-    }
-
-    static boolean isOperand(String toTest) {
-        for (String operand : operandsList) {
-            if (operand.equalsIgnoreCase(toTest)) return true;
-        }
-        return false;
-    }
-
-    static void populateOperands() {
-        operandsList.add("+");
-        operandsList.add("-");
-        operandsList.add("*");
-        operandsList.add("/");
-    }
-
     static double calculate(String operand) {
-        return CalcUtils.evaluateCalc(numbers.pop(),numbers.pop(),operand);
+        Operation toCalc = new Operation(numbers.pop(), numbers.pop(), operand);
+        return toCalc.evaluateCalc();
     }
 
     static Stack<Double> reverse(Stack<Double> toReverse) {
