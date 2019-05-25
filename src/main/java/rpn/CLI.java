@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CLI {
-    private static Stack<Number> tokensStack = new Stack<Number>();
 
     public static final void main(String[] args) {
         String expression = Stream.of(args).collect(Collectors.joining(" "));
@@ -17,13 +16,16 @@ public class CLI {
         Operators operatorsTool = new Operators();
 
         List<Token> tokens = tokenizer.tokenize(expression);
+
+        Stack<Number> tokensStack = new Stack<Number>();
         for (Token token : tokens) {
             if (operatorsTool.findOperator(token) == null) {
                 tokensStack.push(new Number(token.getExpression()));
-            } else {
+            } else if (tokensStack.size() >= 2){
                 operatorsTool.findOperator(token).calculate(tokensStack);
             }
         }
+
 
         double result = tokensStack.pop().getNumber();
 
@@ -32,7 +34,7 @@ public class CLI {
             System.out.print("> ");
             Stack<Number> printableStack = reverse(tokensStack);
             while (!printableStack.isEmpty()) {
-                System.out.print(printableStack.pop() + " ");
+                System.out.print(printableStack.pop().getNumber() + " ");
             }
             System.out.print(result+" ");
         }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CLITest {
 
 
-    String[] argsToTest = {"7"," ","2"," ","-"," ","3"," ","4"};
+    String[] argsToTest1 = {"7"," ","2"," ","-"," ","3"," ","4"};
     final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private PrintStream sysOut;
 
@@ -25,46 +25,93 @@ public class CLITest {
     @After
     public void revertStreams() {
         System.setOut(sysOut);
+        sysOut = null;
     }
 
     @Test
     public void should_evaluate_single_digit_constant() {
-        assertThat(evaluate("5")).isEqualTo(5);
+        String[] argsToTest1 = {"5"};
+        CLI.main(argsToTest1);
+        assertThat(outContent.toString()).contains("> 5");
+
     }
 
     @Test
     public void should_evaluate_multiple_digits_constant() {
-        assertThat(evaluate("17")).isEqualTo(17);
+        String[] argsToTest2 = {"17"};
+        CLI.main(argsToTest2);
+        assertThat(outContent.toString()).contains("> 17");
     }
 
     @Test
     public void should_evaluate_simple_addition() {
-        assertThat(evaluate("17 5 +")).isEqualTo(22);
+
+        String[] argsToTest3 = {"5 5 +"};
+        CLI.main(argsToTest3);
+        assertThat(outContent.toString()).contains("> 10");
+        //assertThat(evaluate("17 5 +")).isEqualTo(22);
     }
 
     @Test
     public void should_evaluate_more_complex_addition() {
-        assertThat(evaluate("2 3 5 + +")).isEqualTo(10);
+
+        String[] argsToTest4 = {"2 3 5 + +"};
+        CLI.main(argsToTest4);
+        assertThat(outContent.toString()).contains("> 10");
+
+        //assertThat(evaluate("2 3 5 + +")).isEqualTo(10);
     }
 
     @Test(expected = ArithmeticException.class)
-    public void should_throws_exception_if_divide_by_zero() { evaluate("7 0 /"); }
+    public void should_throws_exception_if_divide_by_zero() {
+        String[] argsToTest5 = {"7 0 /"};
+        CLI.main(argsToTest5);
+
+        //evaluate("7 0 /");
+    }
 
     @Test
-    public void should_evaluate_negative_division() { assertThat(evaluate("-33 -55 /")).isEqualTo(0.6); }
+    public void should_evaluate_negative_division() {
+        String[] argsToTest6 = {"-33 -55 /"};
+        CLI.main(argsToTest6);
+        assertThat(outContent.toString()).contains("> 0.6");
+
+    //    assertThat(evaluate("-33 -55 /")).isEqualTo(0.6);
+    }
 
     @Test
-    public void should_multiply_double_digits() { assertThat(evaluate("0.58 -38.46 *")).isEqualTo(-22.3068); }
+    public void should_multiply_double_digits() {
+        String[] argsToTest7 = {"0.58 -38.46 *"};
+        CLI.main(argsToTest7);
+        assertThat(outContent.toString()).contains("> -22.3068");
+
+        //assertThat(evaluate("0.58 -38.46 *")).isEqualTo(-22.3068);
+    }
 
     @Test
-    public void should_evaluate_complex_operation() { assertThat(evaluate("14 8 * -12.54 - 20 3.5 + *")).isEqualTo(2926.6899999999996); }
+    public void should_evaluate_complex_operation() {
+        String[] argsToTest8 = {"14 8 * -12.54 - 20 3.5 + *"};
+        CLI.main(argsToTest8);
+        assertThat(outContent.toString()).contains("> 2926.6899999999996");
+
+        //assertThat(evaluate("14 8 * -12.54 - 20 3.5 + *")).isEqualTo(2926.6899999999996);
+    }
 
     @Test
     public void should_evaluate_not_enough_operands() {
-        CLI.main(argsToTest);
+        String[] argsToTest9 = {"7 2 - 3 4"};
+        CLI.main(argsToTest9);
         assertThat(outContent.toString()).contains("> 5.0 3.0 4.0");
     }
 
     @Test
-    public void should_evaluate_too_much_operands() { assertThat(evaluate("5 8 + 2 * + / * - * /")).isEqualTo(26); }
+    public void should_evaluate_too_much_operands() {
+        String[] argsToTest10 = {"5 8 + 2 * + / * - * /"};
+        CLI.main(argsToTest10);
+        assertThat(outContent.toString()).contains("> 26");
+
+
+        //assertThat(evaluate("5 8 + 2 * + / * - * /")).isEqualTo(26);
+
+    }
 }
