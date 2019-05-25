@@ -8,9 +8,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static rpn.CLI.evaluate;
 
 public class CLITest {
+
 
     String[] argsToTest = {"7"," ","2"," ","-"," ","3"," ","4"};
     final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

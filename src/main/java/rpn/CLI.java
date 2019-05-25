@@ -1,21 +1,36 @@
 package rpn;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CLI {
-    private static Stack<Double> numbers = new Stack<Double>();
+    private static Stack<Number> tokensStack = new Stack<Number>();
 
     public static final void main(String[] args) {
         String expression = Stream.of(args).collect(Collectors.joining(" "));
         System.out.println("About to evaluate '" + expression + "'");
-        double result = evaluate(expression);
-        if (numbers.size() == 0) System.out.println("> " + result);
+
+        //Tools class instantiation
+        Tokenizer tokenizer = new Tokenizer();
+        Operators operatorsTool = new Operators();
+
+        List<Token> tokens = tokenizer.tokenize(expression);
+        for (Token token : tokens) {
+            if (operatorsTool.findOperator(token) == null) {
+                tokensStack.push(new Number(token.getExpression()));
+            } else {
+                operatorsTool.findOperator(token).calculate(tokensStack);
+            }
+        }
+
+        double result = tokensStack.pop().getNumber();
+
+        if (tokensStack.isEmpty()) System.out.println("> " + result);
         else {
             System.out.print("> ");
-            Stack<Double> printableStack = reverse(numbers);
+            Stack<Number> printableStack = reverse(tokensStack);
             while (!printableStack.isEmpty()) {
                 System.out.print(printableStack.pop() + " ");
             }
@@ -23,23 +38,8 @@ public class CLI {
         }
     }
 
-    static double evaluate(String expression) {
-        Evaluator evaluator = new Evaluator();
-        String[] expressions = expression.split(" ");
-        for (String character : expressions) {
-            if (evaluator.isNumber(character)) numbers.push(Double.parseDouble(character));
-            if (evaluator.isOperand(character) && numbers.size() >=2 ) numbers.push(calculate(character));
-        }
-        return numbers.pop();
-    }
-
-    static double calculate(String operand) {
-        Operation toCalc = new Operation(numbers.pop(), numbers.pop(), operand);
-        return toCalc.evaluateCalc();
-    }
-
-    static Stack<Double> reverse(Stack<Double> toReverse) {
-        Stack<Double> toReturn = new Stack<Double>();
+    static Stack<Number> reverse(Stack<Number> toReverse) {
+        Stack<Number> toReturn = new Stack<Number>();
         while (!toReverse.isEmpty()) {
             toReturn.push(toReverse.pop());
         }
