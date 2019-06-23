@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public class CLI {
 
     public static final void main(String[] args) {
-        String expression = Stream.of(args).collect(Collectors.joining(" "));
+        /*String expression = Stream.of(args).collect(Collectors.joining(" "));
         System.out.println("About to evaluate '" + expression + "'");
 
         //Tools class instantiation
@@ -37,7 +37,7 @@ public class CLI {
                 System.out.print(printableStack.pop().getNumber() + " ");
             }
             System.out.print(result+" ");
-        }
+        }*/
     }
 
     static Stack<Number> reverse(Stack<Number> toReverse) {
