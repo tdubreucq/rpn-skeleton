@@ -1,7 +1,7 @@
 package rpn.messages;
 
 public class EoeMessage implements Message {
-    private final String TYPE = "eoe";
+
     private String expressionId;
 
     public EoeMessage(String expressionId) {
@@ -10,7 +10,7 @@ public class EoeMessage implements Message {
 
     @Override
     public String eventType() {
-        return TYPE;
+        return "eoe";
     }
 
     public String getExpressionId() {

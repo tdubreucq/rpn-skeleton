@@ -32,7 +32,7 @@ public class CLITest {
     public void should_evaluate_single_digit_constant() {
         String[] argsToTest1 = {"5"};
         CLI.main(argsToTest1);
-        assertThat(outContent.toString()).contains("> 5");
+        assertThat(outContent.toString()).contains("5");
 
     }
 
@@ -40,7 +40,7 @@ public class CLITest {
     public void should_evaluate_multiple_digits_constant() {
         String[] argsToTest2 = {"17"};
         CLI.main(argsToTest2);
-        assertThat(outContent.toString()).contains("> 17");
+        assertThat(outContent.toString()).contains("17");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CLITest {
 
         String[] argsToTest3 = {"5 5 +"};
         CLI.main(argsToTest3);
-        assertThat(outContent.toString()).contains("> 10");
+        assertThat(outContent.toString()).contains("10");
         //assertThat(evaluate("17 5 +")).isEqualTo(22);
     }
 
@@ -57,16 +57,16 @@ public class CLITest {
 
         String[] argsToTest4 = {"2 3 5 + +"};
         CLI.main(argsToTest4);
-        assertThat(outContent.toString()).contains("> 10");
+        assertThat(outContent.toString()).contains("10");
 
         //assertThat(evaluate("2 3 5 + +")).isEqualTo(10);
     }
 
-    @Test(expected = ArithmeticException.class)
+    @Test
     public void should_throws_exception_if_divide_by_zero() {
         String[] argsToTest5 = {"7 0 /"};
         CLI.main(argsToTest5);
-
+        assertThat(outContent.toString()).contains("Exception on 1 : You can't divide by zero");
         //evaluate("7 0 /");
     }
 
@@ -74,7 +74,7 @@ public class CLITest {
     public void should_evaluate_negative_division() {
         String[] argsToTest6 = {"-33 -55 /"};
         CLI.main(argsToTest6);
-        assertThat(outContent.toString()).contains("> 0.6");
+        assertThat(outContent.toString()).contains("0.6");
 
     //    assertThat(evaluate("-33 -55 /")).isEqualTo(0.6);
     }
@@ -83,7 +83,7 @@ public class CLITest {
     public void should_multiply_double_digits() {
         String[] argsToTest7 = {"0.58 -38.46 *"};
         CLI.main(argsToTest7);
-        assertThat(outContent.toString()).contains("> -22.3068");
+        assertThat(outContent.toString()).contains("-22.3068");
 
         //assertThat(evaluate("0.58 -38.46 *")).isEqualTo(-22.3068);
     }
@@ -92,7 +92,7 @@ public class CLITest {
     public void should_evaluate_complex_operation() {
         String[] argsToTest8 = {"14 8 * -12.54 - 20 3.5 + *"};
         CLI.main(argsToTest8);
-        assertThat(outContent.toString()).contains("> 2926.6899999999996");
+        assertThat(outContent.toString()).contains("2926.6899999999996");
 
         //assertThat(evaluate("14 8 * -12.54 - 20 3.5 + *")).isEqualTo(2926.6899999999996);
     }
@@ -101,14 +101,14 @@ public class CLITest {
     public void should_evaluate_not_enough_operands() {
         String[] argsToTest9 = {"7 2 - 3 4"};
         CLI.main(argsToTest9);
-        assertThat(outContent.toString()).contains("> 5.0 3.0 4.0");
+        assertThat(outContent.toString()).contains("5.0, 3.0, 4.0");
     }
 
     @Test
     public void should_evaluate_too_much_operands() {
         String[] argsToTest10 = {"5 8 + 2 * + / * - * /"};
         CLI.main(argsToTest10);
-        assertThat(outContent.toString()).contains("> 26");
+        assertThat(outContent.toString()).contains("26");
 
 
         //assertThat(evaluate("5 8 + 2 * + / * - * /")).isEqualTo(26);

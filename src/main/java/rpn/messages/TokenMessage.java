@@ -1,7 +1,6 @@
 package rpn.messages;
 
 public class TokenMessage implements Message {
-    private final String TYPE = "token";
 
     private final String token;
     private final String expressionId;
@@ -13,7 +12,7 @@ public class TokenMessage implements Message {
 
     @Override
     public String eventType() {
-        return TYPE;
+        return "token";
     }
 
     public String getToken() {

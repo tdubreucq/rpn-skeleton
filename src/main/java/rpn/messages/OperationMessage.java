@@ -3,25 +3,24 @@ package rpn.messages;
 import java.util.Stack;
 
 public class OperationMessage implements Message {
-    private final String TYPE = "operation";
 
-    private final String token;
+    private final String operation;
     private final String expressionId;
-    private Stack<Double> numbers;
+    public Stack<Double> Numbers;
 
     public OperationMessage(String token, String expressionId, Stack<Double> numbers) {
-        this.token = token;
+        this.operation = token;
         this.expressionId = expressionId;
-        this.numbers = numbers;
+        this.Numbers = numbers;
     }
 
     @Override
     public String eventType() {
-        return TYPE;
+        return this.operation;
     }
 
-    public String getToken() {
-        return token;
+    public String getOperation() {
+        return this.operation;
     }
 
     public String getExpressionId() {
